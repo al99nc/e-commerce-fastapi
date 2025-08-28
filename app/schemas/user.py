@@ -1,4 +1,5 @@
-from pydantic import EmailStr
+from typing import Optional
+from pydantic import EmailStr, Field
 from .base import BaseSchema
 # ... your user schemas here
 
@@ -9,8 +10,7 @@ class UserBase(BaseSchema):
 class UserCreate(UserBase):
     email : EmailStr 
     phone_number: Optional[PhoneNumber] = None
-
-   password: str = Field(min_length=6, max_length=100)
+    password: str = Field(min_length=8, max_length=100)
 
 
 class UserResponse(BaseSchema):  # Inherits id, created_at, updated_at
