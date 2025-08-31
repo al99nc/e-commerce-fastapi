@@ -3,7 +3,9 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from uuid import UUID
 from typing import List, Optional
 from app.models.user import User
-from sqlalchemy.orm import selectinload
+
+from sqlmodel import select
+
 
 class UserRepository:
     def __init__(self, db = AsyncSession):

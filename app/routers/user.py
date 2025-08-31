@@ -17,7 +17,7 @@ async def get_all_users():
         }
     ]
 
-@router.post("signup/", response_model=UserResponse)
+@router.post("/signup/", response_model=UserResponse)
 async def create_user(user: UserCreate):
     
     return 
