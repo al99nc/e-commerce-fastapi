@@ -17,13 +17,7 @@ async def get_all_users():
         }
     ]
 
-@router.post("/", response_model=UserResponse)
+@router.post("signup/", response_model=UserResponse)
 async def create_user(user: UserCreate):
-    # For now, just return the data back (fake it)
-    return {
-        "id": "123",
-        "email": user.email,
-        "name": user.full_name,
-        "created_at": "2024-01-01T00:00:00", 
-        "updated_at": "2024-01-01T00:00:00"
-    }
+    
+    return 

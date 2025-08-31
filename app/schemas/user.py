@@ -7,10 +7,12 @@ from .base import BaseSchema
 
 class UserBase(BaseSchema):
     full_name : str
+    #id + creadted at + updated at
 
 class UserCreate(UserBase):
+    #full_name from userbase 
     email : EmailStr 
-    phone_number: Optional[PhoneNumber] = None
+    phone_number: Optional[str] = None
     password: str = Field(min_length=8, max_length=100)
 
 
