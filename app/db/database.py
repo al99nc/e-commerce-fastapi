@@ -1,7 +1,20 @@
-from sqlalchemy import create_engine
+# db.py
+from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
-engine = create_engine("postgresql+psycopg2://postgres:123456@localhost:5432/ecommerce-py", echo=True)
-SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
-Base = declarative_base() # this how every file knows what db its in
+# Use asyncpg driver for PostgreSQL
+DATABASE_URL = "postgresql+asyncpg://postgres:aliila2009@localhost:3000/ecommerce-py"
+
+engine = create_async_engine(DATABASE_URL, echo=True)
+SessionLocal = sessionmaker(
+    engine, 
+    class_=AsyncSession, 
+    expire_on_commit=False
+)
+Base = declarative_base()
+
+# Dependency function to get database session
+async def get_db():
+    async with SessionLocal() as session:
+        yield session
