@@ -1,6 +1,7 @@
 # routers/user.py
 from fastapi import APIRouter
 from app.schemas.user import UserCreate, UserResponse
+from app.services.user import UserServices
 
 router = APIRouter()
 
@@ -18,6 +19,8 @@ async def get_all_users():
     ]
 
 @router.post("/signup/", response_model=UserResponse)
-async def create_user(user: UserCreate):
-    
-    return 
+async def create_user(user: UserCreate,
+                      service: UserServices
+                      ):
+
+    return await service.create(user)

@@ -1,5 +1,6 @@
 # user.py
 from typing import Optional
+from uuid import UUID
 from pydantic import EmailStr, Field
 from .base import BaseSchema
 # ... your user schemas here
@@ -20,3 +21,7 @@ class UserResponse(BaseSchema):  # Inherits id, created_at, updated_at
     email: str
     name: str
     # Don't need to repeat id, created_at, updated_at!
+    
+    
+    class UserRead(BaseSchema):
+        user_id: UUID
