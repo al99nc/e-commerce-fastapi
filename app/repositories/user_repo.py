@@ -33,11 +33,6 @@ class UserRepository:
         await self.db.commit()
         await self.db.refresh(user)
         return user
-        """Add a new profile to the database"""
-        self.db.add(profile)  # Stage it
-        await self.db.commit()  # Save it
-        await self.db.refresh(profile)  # Get the updated version with ID
-        return profile
 
     async def get_by_id(self, profile_id: int) -> Optional[User]:
         """Find a profile by its ID"""

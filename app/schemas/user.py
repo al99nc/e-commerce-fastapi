@@ -3,6 +3,7 @@ from pydantic import BaseModel, EmailStr
 from typing import Optional
 from datetime import datetime
 from uuid import UUID
+from app.schemas.base import BaseSchema, BaseSchemaConfig
 
 # For creating a new user (what the client sends)
 class UserCreate(BaseModel):
@@ -53,5 +54,18 @@ class UserUpdate(BaseModel):
             "example": {
                 "full_name": "Jane Doe",
                 "phone_number": "+0987654321"
+            }
+        }
+        
+        
+class UserRead(BaseSchemaConfig):
+   email: str
+   password: str
+
+   class Config:
+        json_schema_extra = {
+            "example": {
+                "email": "john.doe@example.com",
+                "password": "securepassword123"
             }
         }
