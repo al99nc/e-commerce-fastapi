@@ -72,3 +72,17 @@ class UserRead(BaseSchemaConfig):
                 "password": "securepassword123"
             }
         }
+        
+class UserTokenRead(BaseSchemaConfig):
+   email: str
+   id: UUID
+   role: str
+
+   class Config:
+        json_schema_extra = {
+            "example": {
+                "email": "john.doe@example.com",
+                "id": "123e4567-e89b-12d3-a456-426614174000",
+                "role": "CUSTOMER"
+            }
+        }

@@ -2,7 +2,7 @@
 
 from fastapi import APIRouter, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
-from app.schemas.user import UserCreate, UserResponse , UserRead
+from app.schemas.user import UserCreate, UserResponse , UserRead, UserTokenRead
 from app.services.user import UserServices
 from app.db.database import get_db
 
@@ -26,3 +26,11 @@ async def login_user(
     user_service = UserServices(db)
     return await user_service.login(user)
 
+@router.get("/account/", response_model=UserResponse)
+async def get_account(
+    user: UserTokenRead,
+    db: AsyncSession = Depends(get_db)
+):
+    user_service = UserServices(db)
+    current_user = await user_service.get_current_user(user)
+    return current_user

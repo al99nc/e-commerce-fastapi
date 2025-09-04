@@ -3,7 +3,7 @@ from fastapi import HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 from app.models.user import User
 from app.repositories.user_repo import UserRepository
-from app.schemas.user import UserCreate, UserRead, UserResponse
+from app.schemas.user import UserCreate, UserRead, UserResponse, UserTokenRead
 from passlib.context import CryptContext
 
 # For password hashing
@@ -58,3 +58,14 @@ class UserServices:
 
         # Return the user
         return UserResponse.model_validate(existing_user)
+
+
+    async def get_current_user(self, user: UserTokenRead) -> UserResponse:
+        existing_user = await self.repository.get_by_email(user.email)
+        if not existing_user:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail=f"User with email {user.email} already exists"
+            )
+        return UserResponse.model_validate(existing_user)
+        
