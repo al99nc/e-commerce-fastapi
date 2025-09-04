@@ -5,11 +5,14 @@ from datetime import datetime
 from uuid import UUID
 from app.schemas.base import BaseSchema, BaseSchemaConfig
 
+from pydantic_extra_types.phone_numbers import PhoneNumber
+PhoneNumber.phone_format = 'E164'
+
 # For creating a new user (what the client sends)
 class UserCreate(BaseModel):
     full_name: str
     email: EmailStr
-    phone_number: Optional[str] = None
+    phone_number: Optional[PhoneNumber] = None
     password: str
     
     class Config:
