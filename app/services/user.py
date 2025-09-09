@@ -5,9 +5,8 @@ from app.models.user import User
 from app.repositories.user_repo import UserRepository
 from app.schemas.user import UserCreate, UserRead, UserResponse, UserTokenRead
 from passlib.context import CryptContext
-
-# For password hashing
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+from app.authentication.auth_configuration import get_password_hash, verify_password, create_tokens
+from typing import Optional
 
 class UserServices:
     def __init__(self, db: AsyncSession):
@@ -15,8 +14,8 @@ class UserServices:
         self.repository = UserRepository(self.db)
     
     def hash_password(self, password: str) -> str:
-        return pwd_context.hash(password)
-    
+        return get_password_hash(password)
+
     async def create(self, user: UserCreate) -> UserResponse:
         # Check if user already exists
         existing_user = await self.repository.get_by_email(user.email)
@@ -25,7 +24,7 @@ class UserServices:
                 status_code=status.HTTP_400_BAD_REQUEST,
                 detail=f"User with email {user.email} already exists"
             )
-        
+
         # Create user object with proper field mapping
         user_dict = user.model_dump() # converts Pydantic model to dictionary
         user_dict['name'] = user_dict.pop('full_name')  # Map full_name to name
@@ -36,10 +35,31 @@ class UserServices:
         # Save to database
         created_user = await self.repository.create(user)
         
-        # Return the created user
-        return UserResponse.model_validate(created_user)
-    
-    
+        # Generate tokens using the created user's data
+        tokens = create_tokens(
+            user_id=str(created_user.id),
+            email=created_user.email,
+            role=created_user.role.value  # Convert enum to string
+        )
+        
+        # Update user with tokens
+        created_user.refresh_token = tokens["refresh_token"]
+        
+        # Save updated user with tokens
+        updated_user = await self.repository.update(created_user)
+        
+        # Return the created user with tokens
+        return UserResponse(
+            id=updated_user.id,
+            email=updated_user.email,
+            name=updated_user.name,
+            role=updated_user.role,
+            access_token=tokens["access_token"],
+            created_at=updated_user.created_at,  # Add created_at
+            updated_at=updated_user.updated_at   # Add updated_at
+        )
+
+
     async def login(self, user: UserRead) -> UserResponse:
         # Check if user exists
         existing_user = await self.repository.get_by_email(user.email)
@@ -50,7 +70,7 @@ class UserServices:
             )
 
         # Verify password
-        if not pwd_context.verify(user.password, existing_user.password):
+        if not verify_password(user.password, existing_user.password):
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
                 detail="Invalid credentials"
@@ -68,4 +88,3 @@ class UserServices:
                 detail=f"User with email {user.email} already exists"
             )
         return UserResponse.model_validate(existing_user)
-        

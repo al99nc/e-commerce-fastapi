@@ -38,5 +38,6 @@ class User(Base):
     phone_validated = Column(Boolean, nullable=False, default=False)
     bio = Column(String, nullable=True)
     company = Column(String, nullable=True)
+    refresh_token = Column(String, nullable=True)
     # Fix the relationship (remove this for now until you create SellerProfile model)
     # seller_profile = relationship("SellerProfile", uselist=False, back_populates="user")

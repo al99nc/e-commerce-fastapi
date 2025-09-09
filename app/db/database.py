@@ -25,3 +25,5 @@ Base = declarative_base()
 async def get_db():
     async with SessionLocal() as session:
         yield session
+
+SQLALCHEMY_DATABASE_URL = "postgresql+psycopg2://postgres:aliil2009@localhost:3000/ecommerce-py"
