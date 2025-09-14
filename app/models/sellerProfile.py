@@ -19,6 +19,9 @@ class SellerProfile(Base):
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     user_id = Column(UUID(as_uuid=True), )
     
+    
+    
+    
 ##  علاوي افتهم ال relationship هاي 
 ## موجودة بال هستري بب بريف 
 #https://docs.sqlalchemy.org/en/20/orm/basic_relationships.html
