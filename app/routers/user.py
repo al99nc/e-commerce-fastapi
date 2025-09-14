@@ -34,3 +34,19 @@ async def get_account(
     user_service = UserServices(db)
     current_user = await user_service.get_current_user(user)
     return current_user
+
+@router.post("/refresh-token/", response_model=UserResponse)
+async def refresh_token(
+    user: UserTokenRead,
+    db: AsyncSession = Depends(get_db)
+):
+    user_service = UserServices(db)
+    return await user_service.refresh_token(user)
+@router.post("/logout/", status_code=204)
+async def logout_user(
+    user: UserTokenRead,
+    db: AsyncSession = Depends(get_db)
+):
+    user_service = UserServices(db)
+    await user_service.log_out(user)
+    return None

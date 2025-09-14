@@ -31,11 +31,15 @@ class UserResponse(BaseModel):
     created_at: datetime
     updated_at: datetime
     email: str
-    name: str  # This should match your database field
+    name: str
+    role: str  # Add this
+    avatar: Optional[str] = None  # Add this
+    refresh_token: Optional[str] = None  # Add this    
+    access_token: Optional[str] = None  # Add this
     phone_number: Optional[str] = None
     
     class Config:
-        from_attributes = True  # For SQLAlchemy compatibility
+        from_attributes = True
         json_schema_extra = {
             "example": {
                 "id": "123e4567-e89b-12d3-a456-426614174000",
@@ -43,10 +47,12 @@ class UserResponse(BaseModel):
                 "updated_at": "2025-09-01T14:36:48.900Z",
                 "email": "john.doe@example.com",
                 "name": "John Doe",
+                "role": "user",
+                "avatar": "https://api.dicebear.com/7.x/initials/svg?seed=John%20Doe",
+                "access_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9...",
                 "phone_number": "+1234567890"
             }
         }
-
 # For updating user data (optional - if you need it later)
 class UserUpdate(BaseModel):
     full_name: Optional[str] = None

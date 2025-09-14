@@ -65,15 +65,16 @@ def decode_token(token: str) -> Dict[str, Any]:
         return {}
 
 
-def create_tokens(user_id: str, email: str, role: str) -> Dict[str, str]:
+def create_tokens(user_id: str, email: str, role: str, avatar: str) -> Dict[str, str]:
     """Create both access and refresh tokens."""
     access_token_data = {
-        "sub": user_id,
+        "userId": user_id,
         "email": email,
-        "role": role
+        "role": role,
+        "avatar": avatar
     }
     refresh_token_data = {
-        "sub": user_id,
+        "userId": user_id,
         "email": email
     }
     
