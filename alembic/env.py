@@ -5,6 +5,9 @@ from alembic import context
 
 # Import your models metadata
 from app.models.user import User  # Import specific models
+from app.models.sellerProfile import SellerProfile
+
+# Import specific models
 from app.db.database import Base, SQLALCHEMY_DATABASE_URL  # Import Base from database.py
 
 # this is the Alembic Config object
