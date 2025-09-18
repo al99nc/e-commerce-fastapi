@@ -17,7 +17,7 @@ class SellerProfile(Base):
     __tablename__ = "sellerProfile"
     
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    user_id = Column(ForeignKey("users.id", as_uuid=True), nullable=False)
+    user_id = Column(UUID(as_uuid=True), ForeignKey("users.id"), nullable=False)
     user = relationship(User, uselist=False, backref="seller_profile")
 #
     business_name = Column(String, nullable=False)

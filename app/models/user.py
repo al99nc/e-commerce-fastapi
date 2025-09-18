@@ -40,4 +40,4 @@ class User(Base):
     company = Column(String, nullable=True)
     refresh_token = Column(String, nullable=True)
     # Fix the relationship (remove this for now until you create SellerProfile model)
-    # sseller_profile = relationship("SellerProfile", uselist=False, back_populates="user")
+    # seller_profile = relationship("SellerProfile", uselist=False, back_populates="user")
