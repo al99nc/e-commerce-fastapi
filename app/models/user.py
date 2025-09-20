@@ -6,6 +6,10 @@ from sqlalchemy import UUID, Boolean, DateTime, Enum, Text, Column, Integer, Str
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 from app.db.database import Base
+from app.models.cart import Cart
+from app.models.product import Product
+from app.models.review import Review
+from app.models.sellerProfile import SellerProfile
 
 class UserRole(enum.Enum):
     ADMIN = "ADMIN"
@@ -39,5 +43,7 @@ class User(Base):
     bio = Column(String, nullable=True)
     company = Column(String, nullable=True)
     refresh_token = Column(String, nullable=True)
-    # Fix the relationship (remove this for now until you create SellerProfile model)
-    # seller_profile = relationship("SellerProfile", uselist=False, back_populates="user")
+    seller_profile = relationship(SellerProfile, uselist=False, back_populates="user")
+    products = relationship(Product, uselist=True, back_populates="seller")
+    reviews = relationship(Review, uselist=False, back_populates="user")
+    carts = relationship(Cart, uselist=False, back_populates="user")  # One-to-one relationship with Cart

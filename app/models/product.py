@@ -14,7 +14,7 @@ class Product(Base):
     description = Column(String, nullable=True)
     price = Column(Float, nullable=False)
     stock = Column(Integer, nullable=False, default=0)
-    seller_id = Column(ForeignKey("users.id", as_uuid=True), nullable=False)
+    seller_id = Column(UUID(as_uuid=True), ForeignKey("users.id"), nullable=False)
     seller = relationship("User", back_populates="products")
     
     created_at = Column(DateTime(timezone=True), server_default=func.now())

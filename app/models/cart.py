@@ -17,7 +17,7 @@ class Status(enum.Enum):
 class Cart(Base):
     __tablename__ = "carts"
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    created_by = Column(ForeignKey("users.id", as_uuid=True), nullable=False)
+    created_by = Column(UUID(as_uuid=True), ForeignKey("users.id"), nullable=False)
     created = relationship(User, backref="carts", uselist=False)
     status = Column(Enum(Status), nullable=False, default=Status.active)  # e.g., active, ordered, cancelled
     created_at = Column(DateTime(timezone=True), server_default=func.now())

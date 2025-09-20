@@ -6,7 +6,9 @@ from alembic import context
 # Import your models metadata
 from app.models.user import User  # Import specific models
 from app.models.sellerProfile import SellerProfile
-
+from app.models.product import Product
+from app.models.cart import Cart
+from app.models.cartItem import CartItem
 # Import specific models
 from app.db.database import Base, SQLALCHEMY_DATABASE_URL  # Import Base from database.py
 
