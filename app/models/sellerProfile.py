@@ -13,7 +13,7 @@ class SellerStatus(enum.Enum):
   suspended = "SUSPENDED"  # Temporarily blocked
   banned = "BANNED"  # Permanently blocked
 class SellerProfile(Base):
-    __tablename__ = "sellerProfile"
+    __tablename__ = "seller_profile"
     
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     user_id = Column(UUID(as_uuid=True), ForeignKey("users.id"), nullable=False)

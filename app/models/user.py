@@ -44,6 +44,6 @@ class User(Base):
     company = Column(String, nullable=True)
     refresh_token = Column(String, nullable=True)
     seller_profile = relationship(SellerProfile, uselist=False, back_populates="user")
-    products = relationship(Product, uselist=True, back_populates="seller")
+    products = relationship(Product, uselist=False, back_populates="seller")
     reviews = relationship(Review, uselist=False, back_populates="user")
     carts = relationship(Cart, uselist=False, back_populates="user")  # One-to-one relationship with Cart
