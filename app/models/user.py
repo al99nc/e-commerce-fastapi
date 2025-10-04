@@ -6,10 +6,10 @@ from sqlalchemy import UUID, Boolean, DateTime, Enum, Text, Column, Integer, Str
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 from app.db.database import Base
-from app.models.cart import Cart
-from app.models.product import Product
-from app.models.review import Review
-from app.models.sellerProfile import SellerProfile
+# from app.models.cart import Cart
+# from app.models.product import Product
+# from app.models.review import Review
+# from app.models.sellerProfile import SellerProfile
 
 class UserRole(enum.Enum):
     ADMIN = "ADMIN"
@@ -19,6 +19,7 @@ class UserRole(enum.Enum):
 class Locale(enum.Enum):
     en = "en"
     ar = "ar"
+
 class User(Base):
     __tablename__ = "users"
     
@@ -32,7 +33,7 @@ class User(Base):
     email = Column(String, unique=True, nullable=False)
     password = Column(String, nullable=False)
     
-    # Additional fields from your existing database
+    # Additional fields
     phone_number = Column(String, nullable=True)
     role = Column(Enum(UserRole), default=UserRole.CUSTOMER)
     avatar = Column(String, nullable=True)
@@ -43,7 +44,17 @@ class User(Base):
     bio = Column(String, nullable=True)
     company = Column(String, nullable=True)
     refresh_token = Column(String, nullable=True)
-    seller_profile = relationship(SellerProfile, uselist=False, back_populates="user")
-    products = relationship(Product, uselist=False, back_populates="seller")
-    reviews = relationship(Review, uselist=False, back_populates="user")
-    carts = relationship(Cart, uselist=False, back_populates="user")  # One-to-one relationship with Cart
+    
+    # Relationships
+    # One-to-one: A user has one seller profile
+    seller_profile = relationship("SellerProfile", uselist=False, back_populates="user")
+    
+    # One-to-many: A seller (user) has many products
+    
+    # One-to-many: A user can write many reviews
+    reviews = relationship("Review", back_populates="user")
+    
+    # One-to-one: A user has one cart (if this is your business logic)
+    # Change to uselist=True if a user can have multiple carts
+    cart = relationship("Cart", uselist=False, back_populates="user")
+    orders = relationship("Order", back_populates="user")

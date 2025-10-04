@@ -14,7 +14,7 @@ class OrderLine(Base):
     order = relationship("Order", back_populates="order_lines")
 
     product_id = Column(UUID(as_uuid=True), ForeignKey("products.id"), nullable=False)
-    
     product = relationship("Product", back_populates="order_lines")
+    
     quantity = Column(Integer, nullable=False, default=1)
     price = Column(Float, nullable=False)

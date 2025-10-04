@@ -38,8 +38,10 @@ class Product(Base):
     tags = Column(ARRAY(String), nullable=False, default=list)
     
 
-    status = Column(Enum(ProductStatus), nullable=False, default=ProductStatus.ACTIVE)
+    status = Column(Enum(ProductStatus), nullable=False, default=ProductStatus.active)
     stock_quantity = Column(Integer, nullable=False, default=0)
 
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     updated_at = Column(DateTime(timezone=True), onupdate=func.now())
+    
+    order_lines = relationship("OrderLine", back_populates="product")

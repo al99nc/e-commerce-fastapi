@@ -4,7 +4,7 @@ import enum
 import uuid
 from sqlalchemy import UUID, Boolean, Column, DateTime, Enum, Text, Integer, String, Float, ForeignKey, func
 from sqlalchemy.orm import relationship
-from app.models.user import User
+# from app.models.user import User
 from app.db.database import Base
 
 class SellerStatus(enum.Enum):
@@ -17,7 +17,7 @@ class SellerProfile(Base):
     
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     user_id = Column(UUID(as_uuid=True), ForeignKey("users.id"), nullable=False)
-    user = relationship(User, uselist=False, back_populates="seller_profile")
+    user = relationship("User", uselist=False, back_populates="seller_profile")
 #
     business_name = Column(String, nullable=False)
     business_address = Column(String, nullable=True)
@@ -45,3 +45,4 @@ class SellerProfile(Base):
     total_orders = Column(Integer, nullable=True, default=0)
 
 
+    products = relationship("Product", back_populates="seller_profile")
