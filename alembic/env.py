@@ -4,11 +4,15 @@ from sqlalchemy import create_engine
 from alembic import context
 
 # Import your models metadata
-from app.models.user import User  # Import specific models
+from app.models.user import User
 from app.models.sellerProfile import SellerProfile
 from app.models.product import Product
+from app.models.category import Category  # ✅ ADD THIS LINE
 from app.models.cart import Cart
 from app.models.cartItem import CartItem
+from app.models.order import Order
+from app.models.orderLine import OrderLine
+from app.models.review import Review
 # Import specific models
 from app.db.database import Base, SQLALCHEMY_DATABASE_URL  # Import Base from database.py
 

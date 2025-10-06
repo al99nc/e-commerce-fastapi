@@ -2,10 +2,9 @@ from sqlalchemy import Column, String, DateTime, ForeignKey, Index, ARRAY, Text
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
-from sqlalchemy.ext.declarative import declarative_base
 import uuid
+from app.db.database import Base
 
-Base = declarative_base()
 
 class Category(Base):
     __tablename__ = "categories"
@@ -31,7 +30,6 @@ class Category(Base):
     # Self-referencing relationships
     parent = relationship("Category", remote_side=[id], back_populates="children")
     children = relationship("Category", back_populates="parent")
-    products_id = Column(ARRAY(UUID(as_uuid=True)), nullable=False, default=list)    
     products = relationship("Product", back_populates="category")
 
 

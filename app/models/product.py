@@ -25,7 +25,7 @@ class Product(Base):
     category_id = Column(UUID(as_uuid=True), ForeignKey("categories.id"), nullable=False)
     category = relationship("Category", back_populates="products")
     
-    seller_id = Column(UUID(as_uuid=True), ForeignKey("seller_profiles.id"), nullable=False)
+    seller_id = Column(UUID(as_uuid=True), ForeignKey("seller_profile.id"), nullable=False)
     seller = relationship("SellerProfile", back_populates="products")
 
     title = Column(String, nullable=False)
