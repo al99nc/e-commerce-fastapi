@@ -28,6 +28,7 @@ class Product(Base):
     seller_id = Column(UUID(as_uuid=True), ForeignKey("seller_profile.id"), nullable=False)
     seller = relationship("SellerProfile", back_populates="products")
 
+
     title = Column(String, nullable=False)
     picture = Column(String, nullable=True)
     summary = Column(String, nullable=True)
@@ -45,3 +46,4 @@ class Product(Base):
     updated_at = Column(DateTime(timezone=True), onupdate=func.now())
     
     order_lines = relationship("OrderLine", back_populates="product")
+    reviews = relationship("Review", back_populates="product")

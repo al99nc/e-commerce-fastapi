@@ -56,5 +56,5 @@ class User(Base):
     
     # One-to-one: A user has one cart (if this is your business logic)
     # Change to uselist=True if a user can have multiple carts
-    cart = relationship("Cart", uselist=False, back_populates="user")
+    cart = relationship("Cart", uselist=False, back_populates="created")
     orders = relationship("Order", back_populates="user")

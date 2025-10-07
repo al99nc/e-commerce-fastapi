@@ -45,4 +45,4 @@ class SellerProfile(Base):
     total_orders = Column(Integer, nullable=True, default=0)
 
 
-    products = relationship("Product", back_populates="seller_profile")
+    products = relationship("Product", back_populates="seller")
