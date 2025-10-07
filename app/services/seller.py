@@ -22,4 +22,4 @@ class SellerServices:
                 status_code=status.HTTP_404_NOT_FOUND,
                 detail=f"Seller with id {user.id} not found"
             )
-        return SellerRead.from_orm(seller)
+        return SellerRead(seller)

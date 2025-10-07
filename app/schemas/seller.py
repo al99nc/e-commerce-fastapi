@@ -9,9 +9,13 @@ from pydantic_extra_types.phone_numbers import PhoneNumber
 PhoneNumber.phone_format = 'E164'
 
 class SellerRead(BaseSchemaConfig):
-    id = UUID
-    role = "seller"
-    example = {
-        "id": "123e4567-e89b-12d3-a456-426614174000",
-        "role": "seller"
-    } 
+    id : UUID
+    role : str 
+    model_config = {
+        "json_schema_extra": {
+            "example": {
+                "id": "123e4567-e89b-12d3-a456-426614174000",
+                "role": "seller"
+            }
+        }
+    }
