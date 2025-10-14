@@ -21,3 +21,10 @@ async def become_seller(
 ):
         seller_service = SellerServices(db)
         return await seller_service.become_seller(user)
+@router.get("/seller/dashboard")
+async def get_seller_dashboard(
+        user: SellerRead,
+        db: AsyncSession = Depends(get_db)
+):
+        seller_service = SellerServices(db)
+        return await seller_service.get_seller_dashboard(user)

@@ -1,8 +1,11 @@
-from sqlalchemy import select
+from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 from uuid import UUID
 from typing import List, Optional
 from app.models import user
+from app.models.order import Order
+from app.models.orderLine import OrderLine
+from app.models.product import Product
 from app.models.sellerProfile import SellerProfile, SellerStatus
 from app.models.user import UserRole
 from app.models.user import User
@@ -62,3 +65,95 @@ class SellerRepository:
             await self.db.commit()
             await self.db.refresh(user)
         return user
+    async def get_total_products(self, user_id: UUID) -> int:
+        # Placeholder logic to count products for the seller
+        result = await self.db.execute(
+            select(SellerProfile).where(SellerProfile.user_id == user_id)
+        )
+        
+        products = await self.db.execute(
+            select(func.count(Product)).where(Product.seller_id == result.scalar_one_or_none().id)
+        )
+        return products.scalar_one()
+    async def get_total_sales(self, user_id: UUID) -> float:
+        result = await self.db.execute(
+            select(SellerProfile.total_sales).where(SellerProfile.user_id == user_id)
+        )
+        return result.scalar_one() or 0.0
+    async def get_recent_orders(self, user_id: UUID) -> List[dict]:
+        result = await self.db.execute(
+            select(SellerProfile.total_orders).where(SellerProfile.user_id == user_id)
+        )
+        return result.scalars().all()
+    async def get_seller_rating(self, user_id: UUID) -> float:
+        result = await self.db.execute(
+            select(SellerProfile.rating).where(SellerProfile.user_id == user_id)
+        )
+        return result.scalar_one() or 0.0
+
+    async def get_seller_rating_count(self, user_id: UUID) -> int:
+        result = await self.db.execute(
+            select(SellerProfile.reviews_count).where(SellerProfile.user_id == user_id)
+        )
+        return result.scalar_one() or 0
+    async def get_products(self, user_id: UUID) -> List[Product]:
+        # Placeholder logic to count products for the seller
+        result = await self.db.execute(
+            select(SellerProfile).where(SellerProfile.user_id == user_id)
+        )
+        
+        products = await self.db.execute(
+            select(Product).where(Product.seller_id == result.scalar_one_or_none().id)
+        )
+        return products.scalars().all()
+    async def get_recent_orders_list(self, user_id: UUID) -> List[dict]:
+        products = await self.get_products(user_id)
+        for i in range(len(products)):
+             result = await self.db.execute(
+            select(OrderLine).where(OrderLine.product_id == products[i].id)
+        )
+        users_orders_ids = await self.db.execute(
+            select(Order.user_id).where(Order.id == OrderLine.order_id)
+        )
+        users_info = await self.db.execute(
+            select(User.name, User.email).where(User.id == users_orders_ids)
+        )
+        recent_orders = result, users_orders_ids, users_info
+        return recent_orders
+    #### your shit code wont work 
+    
+    ### read this befor using itttttttttttttttt "async def get_recent_orders_list(self, user_id: UUID) -> List[dict]:
+    # products = await self.get_products(user_id)
+    
+    # recent_orders = []  # Collect all orders here
+    
+    # for product in products:
+    #     # Get order lines for this product
+    #     result = await self.db.execute(
+    #         select(OrderLine).where(OrderLine.product_id == product.id)
+    #     )
+    #     order_lines = result.scalars().all()
+        
+    #     for order_line in order_lines:
+    #         # Get the order's user_id
+    #         order_result = await self.db.execute(
+    #             select(Order.user_id).where(Order.id == order_line.order_id)
+    #         )
+    #         user_id_from_order = order_result.scalar_one_or_none()
+            
+    #         if user_id_from_order:
+    #             # Get user info
+    #             user_result = await self.db.execute(
+    #                 select(User.name, User.email).where(User.id == user_id_from_order)
+    #             )
+    #             user_info = user_result.one_or_none()
+                
+    #             if user_info:
+    #                 # Build the order dict
+    #                 recent_orders.append({
+    #                     'order_line': order_line,
+    #                     'user_name': user_info.name,
+    #                     'user_email': user_info.email
+    #                 })
+    
+    # return recent_orders"
