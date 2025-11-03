@@ -120,40 +120,41 @@ class SellerRepository:
         )
         recent_orders = result, users_orders_ids, users_info
         return recent_orders
-    #### your shit code wont work 
+    ### your shit code wont work 
     
-    ### read this befor using itttttttttttttttt "async def get_recent_orders_list(self, user_id: UUID) -> List[dict]:
-    # products = await self.get_products(user_id)
-    
-    # recent_orders = []  # Collect all orders here
-    
-    # for product in products:
-    #     # Get order lines for this product
-    #     result = await self.db.execute(
-    #         select(OrderLine).where(OrderLine.product_id == product.id)
-    #     )
-    #     order_lines = result.scalars().all()
+    ## read this befor using itttttttttttttttt "
+    async def get_recent_orders_list(self, user_id: UUID) -> List[dict]:
+        products = await self.get_products(user_id)
         
-    #     for order_line in order_lines:
-    #         # Get the order's user_id
-    #         order_result = await self.db.execute(
-    #             select(Order.user_id).where(Order.id == order_line.order_id)
-    #         )
-    #         user_id_from_order = order_result.scalar_one_or_none()
+        recent_orders = []  # Collect all orders here
+        
+        for product in products:
+            # Get order lines for this product
+            result = await self.db.execute(
+                select(OrderLine).where(OrderLine.product_id == product.id)
+            )
+            order_lines = result.scalars().all()
             
-    #         if user_id_from_order:
-    #             # Get user info
-    #             user_result = await self.db.execute(
-    #                 select(User.name, User.email).where(User.id == user_id_from_order)
-    #             )
-    #             user_info = user_result.one_or_none()
+            for order_line in order_lines:
+                # Get the order's user_id
+                order_result = await self.db.execute(
+                    select(Order.user_id).where(Order.id == order_line.order_id)
+                )
+                user_id_from_order = order_result.scalar_one_or_none()
                 
-    #             if user_info:
-    #                 # Build the order dict
-    #                 recent_orders.append({
-    #                     'order_line': order_line,
-    #                     'user_name': user_info.name,
-    #                     'user_email': user_info.email
-    #                 })
-    
-    # return recent_orders"
+                if user_id_from_order:
+                    # Get user info
+                    user_result = await self.db.execute(
+                        select(User.name, User.email).where(User.id == user_id_from_order)
+                    )
+                    user_info = user_result.one_or_none()
+                    
+                    if user_info:
+                        # Build the order dict
+                        recent_orders.append({
+                            'order_line': order_line,
+                            'user_name': user_info.name,
+                            'user_email': user_info.email
+                        })
+        
+        return recent_orders
