@@ -72,7 +72,7 @@ class SellerRepository:
         )
         
         products = await self.db.execute(
-            select(func.count(Product)).where(Product.seller_id == result.scalar_one_or_none().id)
+            select(func.count(Product.id)).where(Product.seller_id == result.scalar_one_or_none().id)
         )
         return products.scalar_one()
     async def get_total_sales(self, user_id: UUID) -> float:
@@ -80,11 +80,6 @@ class SellerRepository:
             select(SellerProfile.total_sales).where(SellerProfile.user_id == user_id)
         )
         return result.scalar_one() or 0.0
-    async def get_recent_orders(self, user_id: UUID) -> List[dict]:
-        result = await self.db.execute(
-            select(SellerProfile.total_orders).where(SellerProfile.user_id == user_id)
-        )
-        return result.scalars().all()
     async def get_seller_rating(self, user_id: UUID) -> float:
         result = await self.db.execute(
             select(SellerProfile.rating).where(SellerProfile.user_id == user_id)
@@ -106,21 +101,6 @@ class SellerRepository:
             select(Product).where(Product.seller_id == result.scalar_one_or_none().id)
         )
         return products.scalars().all()
-    async def get_recent_orders_list(self, user_id: UUID) -> List[dict]:
-        products = await self.get_products(user_id)
-        for i in range(len(products)):
-             result = await self.db.execute(
-            select(OrderLine).where(OrderLine.product_id == products[i].id)
-        )
-        users_orders_ids = await self.db.execute(
-            select(Order.user_id).where(Order.id == OrderLine.order_id)
-        )
-        users_info = await self.db.execute(
-            select(User.name, User.email).where(User.id == users_orders_ids)
-        )
-        recent_orders = result, users_orders_ids, users_info
-        return recent_orders
-    ### your shit code wont work 
     
     ## read this befor using itttttttttttttttt "
     async def get_recent_orders_list(self, user_id: UUID) -> List[dict]:
@@ -158,3 +138,16 @@ class SellerRepository:
                         })
         
         return recent_orders
+    async def create_product(self, seller: User) -> dict:
+        # Placeholder logic to create a product for the seller
+        new_product = Product(
+            seller_id=seller.id,
+            name="New Product",
+            description="Product Description",
+            price=0.0,
+            stock=0
+        )
+        self.db.add(new_product)
+        await self.db.commit()
+        await self.db.refresh(new_product)
+        return new_product

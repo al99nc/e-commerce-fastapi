@@ -19,6 +19,20 @@ class SellerRead(BaseModel):
             }
         }
     
+
+class SellerDash(BaseModel):
+    name: str
+    email: EmailStr 
+    
+    class Config:
+        from_attributes = True
+        json_schema_extra = {
+            "example": {
+                "id": "7e2d5402-f408-4ac9-b9dc-f0413346a76b",  # UUID must be quoted
+                "role": "seller"
+            }
+        }
+
 class BecomeSellerRead(SellerRead):
     business_name: str
     business_type: str
@@ -41,3 +55,23 @@ class BecomeSellerRead(SellerRead):
                 "business_email": "seller@example.com"
             }
         }
+        
+class ProductData(BaseModel):
+    name: str
+    description: Optional[str]
+    price: Optional[float]
+    stock: Optional[int]
+    summary: Optional[str]
+    tags: Optional[list[str]] 
+    
+    class Config:
+        json_schema_extra = {
+            "example": {
+                "name": "Sample Product",
+                "description": "This is a sample product.",
+                "price": 19.99,
+                "stock": 100,
+                "summary": "A brief summary of the product.",
+                "tags": ["sample", "product", "ecommerce"]
+            }
+        }   
