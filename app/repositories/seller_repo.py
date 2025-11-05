@@ -145,6 +145,7 @@ class SellerRepository:
             name="New Product",
             description="Product Description",
             price=0.0,
+            #here just finish the fields according to your Product model definition so just repo work left like categoryId, tags, picture, summary ,,lovely
             stock=0
         )
         self.db.add(new_product)

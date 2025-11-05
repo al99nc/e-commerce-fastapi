@@ -3,7 +3,7 @@ from fastapi import HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 from app.models.user import User
 from app.repositories.seller_repo import SellerRepository
-from app.schemas.seller import SellerDash, SellerRead, BecomeSellerRead
+from app.schemas.seller import ProductData, SellerDash, SellerRead, BecomeSellerRead
 from urllib.parse import quote
 class SellerServices:
     def __init__(self, db: AsyncSession):
@@ -52,7 +52,7 @@ class SellerServices:
             "recent_orders": recent_orders  # Placeholder value
         }
         return dashboard_data
-    async def create_product(self, user: SellerRead, product_data: dict = {}) -> dict:
+    async def create_product(self, user: SellerRead, product_data: ProductData) -> dict:
         seller = await self.repository.get_by_id(user.id)
         if not seller:
             raise HTTPException(

@@ -57,12 +57,17 @@ class BecomeSellerRead(SellerRead):
         }
         
 class ProductData(BaseModel):
-    name: str
+    sellerId: UUID
+    categoryId: UUID
+    title: str
     description: Optional[str]
     price: Optional[float]
+    discount_type: Optional[float]
+    discount_value: Optional[float]
     stock: Optional[int]
     summary: Optional[str]
-    tags: Optional[list[str]] 
+    tags: Optional[list[str]]
+    picture: Optional[str]
     
     class Config:
         json_schema_extra = {
@@ -70,8 +75,11 @@ class ProductData(BaseModel):
                 "name": "Sample Product",
                 "description": "This is a sample product.",
                 "price": 19.99,
+                "discount_type": "percentage",
+                "discount_value": 0.1,
                 "stock": 100,
                 "summary": "A brief summary of the product.",
-                "tags": ["sample", "product", "ecommerce"]
+                "tags": ["sample", "product", "ecommerce"],
+                "picture": "C:/Users/gt store/Desktop/eecommerc/e-commerce/server/src/uploads/1753029300314.png"
             }
         }   

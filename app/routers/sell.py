@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.db.database import get_db
-from app.schemas.seller import SellerRead, BecomeSellerRead
+from app.schemas.seller import ProductData, SellerRead, BecomeSellerRead
 from app.services.seller import SellerServices
 
 router = APIRouter()
@@ -28,7 +28,7 @@ async def get_seller_dashboard(
 ):
         seller_service = SellerServices(db)
         return await seller_service.get_seller_dashboard(user)
-@router.get("/seller/create-product")
+@router.post("/seller/create-product")
 async def create_product(
         user: SellerRead,
         product_data: ProductData,
