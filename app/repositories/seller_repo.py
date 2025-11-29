@@ -12,6 +12,8 @@ from app.models.user import User
 
 from sqlmodel import select
 
+from app.schemas.seller import ProductData
+
 class SellerRepository:
     def __init__(self, db: AsyncSession):
         self.db = db
@@ -138,15 +140,22 @@ class SellerRepository:
                         })
         
         return recent_orders
-    async def create_product(self, seller: User) -> dict:
+    async def create_product(self, seller: User, product_data: ProductData) -> dict:
         # Placeholder logic to create a product for the seller
         new_product = Product(
+            id=product_data.id,
             seller_id=seller.id,
-            name="New Product",
-            description="Product Description",
-            price=0.0,
+            name=product_data.title,
+            description=product_data.description,
+            price=product_data.price,
             #here just finish the fields according to your Product model definition so just repo work left like categoryId, tags, picture, summary ,,lovely
-            stock=0
+            stock=product_data.stock,
+            discount_type=product_data.discount_type,
+            discount_value=product_data.discount_value,
+            category_id=product_data.categoryId,
+            tags=product_data.tags,
+            picture=product_data.picture,
+            summary=product_data.summary
         )
         self.db.add(new_product)
         await self.db.commit()
