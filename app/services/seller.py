@@ -52,13 +52,3 @@ class SellerServices:
             "recent_orders": recent_orders  # Placeholder value
         }
         return dashboard_data
-    async def create_product(self, user: SellerRead, product_data: ProductData) -> dict:
-        seller = await self.repository.get_by_id(user.id)
-        if not seller:
-            raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND,
-                detail=f"Seller with id {user.id} not found"
-            )
-        # Logic to create a product for the seller
-        product = await self.repository.create_product(seller, product_data)
-        return product

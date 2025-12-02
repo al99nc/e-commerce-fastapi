@@ -28,11 +28,3 @@ async def get_seller_dashboard(
 ):
         seller_service = SellerServices(db)
         return await seller_service.get_seller_dashboard(user)
-@router.post("/seller/create-product")
-async def create_product(
-        user: SellerRead,
-        product_data: ProductData,
-        db: AsyncSession = Depends(get_db)
-):
-        seller_service = SellerServices(db)
-        return await seller_service.create_product(user, product_data)
