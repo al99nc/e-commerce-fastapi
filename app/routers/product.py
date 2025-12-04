@@ -9,7 +9,6 @@ from app.services.seller import SellerServices
 
 
 router = APIRouter()
-# @router.get("/products/")
 @router.post("/create-product")
 async def create_product(
         user: SellerRead,
