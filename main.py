@@ -1,3 +1,4 @@
+from app.routers import home
 from fastapi import FastAPI
 import app.models  # Ensure models are imported for SQLAlchemy to register them
 from app.routers import cart, product
@@ -9,3 +10,4 @@ app.include_router(user.router, tags=["Users"])
 app.include_router(sell.router, tags=["Seller"])
 app.include_router(product.router, tags=["Products"])
 app.include_router(cart.router, tags=["Cart"])
+app.include_router(home.router, tags=["Home"])

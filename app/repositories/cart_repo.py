@@ -56,7 +56,6 @@ class CartRepository:
         await self.db.refresh(new_cart_item)
         return new_cart_item
     async def add_to_cart(self, user: User, product_id: UUID, quantity: int) -> dict:
-        # Placeholder logic to add a product to the cart for the user
         result = await self.db.execute(
             select(Cart).where(Cart.created_by == user.id)
         )
