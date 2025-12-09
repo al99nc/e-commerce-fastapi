@@ -26,4 +26,4 @@ async def get_db():
     async with SessionLocal() as session:
         yield session
 
-SQLALCHEMY_DATABASE_URL = "postgresql+psycopg2://postgres:123456@localhost:5432/ecommerce-py"
+SQLALCHEMY_DATABASE_URL = "postgresql://postgres:UuZJvjmXBADnWpPwVqYYenGvuygjYlah@maglev.proxy.rlwy.net:11499/railway"
