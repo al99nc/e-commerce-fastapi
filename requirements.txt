@@ -41,5 +41,5 @@ uvicorn==0.35.0
 websockets==15.0.1
 passlib==1.7.4
 bcrypt==4.0.1
-pydantic_extra_types==0.2.0
+pydantic_extra_types==2.10.6
 psycopg2-binary==2.9.7
