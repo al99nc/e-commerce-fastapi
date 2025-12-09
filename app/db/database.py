@@ -25,6 +25,7 @@ SessionLocal = sessionmaker(
     class_=AsyncSession, 
     expire_on_commit=False
 )
+Base = declarative_base()
 
 # Dependency function to get database session
 async def get_db():
