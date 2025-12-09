@@ -20,6 +20,14 @@ print(f"Final DATABASE_URL: {DATABASE_URL}")
 
 # Now create engine
 engine = create_async_engine(DATABASE_URL, echo=True)
-async_session = sessionmaker(engine, class_=AsyncSession, expire_on_commit=False)
+SessionLocal = sessionmaker(
+    engine, 
+    class_=AsyncSession, 
+    expire_on_commit=False
+)
 
-Base = declarative_base()
+# Dependency function to get database session
+async def get_db():
+    async with SessionLocal() as session:
+        yield session
+
