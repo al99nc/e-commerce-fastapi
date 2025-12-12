@@ -8,7 +8,6 @@ from app.schemas.seller import ProductData, SellerDash, SellerRead, BecomeSeller
 from urllib.parse import quote
 from app.repositories.cart_repo import CartRepository
 from app.schemas.seller import SellerRead
-from app.repositories.seller_repo import get_by_id
 class CartServices:
     
     def __init__(self, db: AsyncSession):
