@@ -1,6 +1,10 @@
 from fastapi import APIRouter
 
+from app.services.home import HomeServices
+
 router = APIRouter()
 @router.get("/")
 async def read_home():
-    return {"message": "hi there, you just hit the frist deployed project created by Ali Hamed!"}
+    homeservices = HomeServices()
+    return await homeservices.get_home_data()
+    

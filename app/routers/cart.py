@@ -10,6 +10,13 @@ from uuid import UUID
 
 
 router = APIRouter()
+@router.get("/cart", response_model=list[ProductData])
+async def get_cart(
+        user: SellerRead,
+        db: AsyncSession = Depends(get_db)
+    ):
+        cart_services = CartServices(db)
+        return await cart_services.get_cart(user)
 @router.post("/add-to-cart/{product_id}")
 async def add_to_cart(
         user: SellerRead,

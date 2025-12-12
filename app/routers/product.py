@@ -39,3 +39,11 @@ async def delete_product(
         product_services = ProductServices(db)
         await product_services.delete_product(user, product_id)
         return {"message": f"Product with id {product_id} deleted successfully"}
+@router.get("/products/{product_id}", response_model=ProductData)
+async def get_product(
+        product_id: str,
+        db: AsyncSession = Depends(get_db)
+):
+    product_services = ProductServices(db)
+    product = await product_services.get_product(product_id)
+    return product

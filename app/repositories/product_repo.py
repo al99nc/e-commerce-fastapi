@@ -78,3 +78,8 @@ class ProductRepository:
         await self.db.delete(product)
         await self.db.commit()
         return {"message": f"Product with id {product_id} deleted successfully"}
+    async def get_product_info_by_id(self, product_id: UUID) -> Optional[Product]:
+        result = await self.db.execute(
+            select(Product).where(Product.id == product_id)
+        )
+        return result.scalar_one_or_none()

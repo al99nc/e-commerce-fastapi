@@ -77,3 +77,23 @@ class CartRepository:
         await self.db.commit()
         await self.db.refresh(add_item_to_cart)
         return add_item_to_cart
+    async def get_cart(self, user: User) -> list[ProductData]:
+        result = await self.db.execute(
+            select(Cart).where(Cart.created_by == user.id)
+        )
+        cart = result.scalar_one_or_none()
+        if not cart:
+            return []
+        req = await self.db.execute(
+            select(CartItem).where(CartItem.cart_id == cart.id)
+        )
+        cart_items = req.scalars().all()
+        products_in_cart = []
+        for item in cart_items:
+            product_data = ProductData(
+                id=item.product_id,
+                price=item.price,
+                quantity=item.quantity
+            )
+            products_in_cart.append(product_data)
+        return products_in_cart

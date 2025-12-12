@@ -8,6 +8,8 @@ from app.repositories.seller_repo import SellerRepository
 from app.schemas.seller import ProductData, SellerDash, SellerRead, BecomeSellerRead
 from urllib.parse import quote
 from app.repositories.seller_repo import SellerRepository
+from app.repositories.product_repo import ProductRepository
+
 class ProductServices:
     def __init__(self, db: AsyncSession):
         self.db = db
@@ -45,3 +47,11 @@ class ProductServices:
         # Logic to delete a product for the seller
         product = await self.repository.delete_product(seller, product_id)
         return product  
+    async def get_product(self, product_id: UUID) -> ProductData:
+        product = await self.repository.get_product_info_by_id(product_id)
+        if not product:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail=f"Product with id {product_id} not found"
+            )
+        return ProductData.from_orm(product)
